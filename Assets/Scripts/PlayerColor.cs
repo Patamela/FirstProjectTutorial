@@ -27,7 +27,8 @@ public class PlayerColor : NetworkBehaviour
         }
 
         if (Keyboard.current.iKey.wasPressedThisFrame && healthPoints >= 0)
-        {   
+        {
+
             healthPoints -= hit;
             Color colorActual = NetworkedColor;
 
@@ -36,6 +37,18 @@ public class PlayerColor : NetworkBehaviour
 
             NetworkedColor = colorActual;
         }
+    }
+
+    public void UpdateColor()
+    {
+        if(!Object.HasStateAuthority) return;
+
+        Color colorActual = NetworkedColor;
+
+        colorActual.r = Mathf.Clamp01(colorActual.r + 0.2f);
+        colorActual.g = Mathf.Clamp01(colorActual.g - 0.2f);
+
+        NetworkedColor = colorActual;
     }
 
     private void ColorChanged()

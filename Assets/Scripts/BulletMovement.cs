@@ -1,14 +1,14 @@
+using System.Diagnostics.Contracts;
 using Fusion;
 using UnityEngine;
 
 public class BulletMovement : NetworkBehaviour
 {
     [SerializeField] private float velocity = 20f;
-    [SerializeField] private int damage = 10;
+    [SerializeField] private int damage = 20;
 
     public override void FixedUpdateNetwork()
     {
-        Debug.Log("Posicion actualizada: "+transform.position);
         transform.position += transform.forward * velocity * Runner.DeltaTime;
     }
 
@@ -20,5 +20,12 @@ public class BulletMovement : NetworkBehaviour
         {
             health.RPC_TakeDamage(damage);
         }
+
+
+        if (Object != null && Object.HasStateAuthority)
+        {
+            Runner.Despawn(Object);
+        }
     }
+
 }
