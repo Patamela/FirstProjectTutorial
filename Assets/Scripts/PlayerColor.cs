@@ -4,11 +4,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerColor : NetworkBehaviour
 {
-    public MeshRenderer MeshRenderer;
+    public  MeshRenderer MeshRenderer;
     private int healthPoints = 50;
     private int hit;
 
     [Networked, OnChangedRender(nameof(ColorChanged))] public Color NetworkedColor {get; set;}
+
+    public override void Spawned()
+    {
+        NetworkedColor = new Color(0f, 1f, 0f, 1f);
+        ColorChanged();
+    }
 
     private void Update()
     {
@@ -20,18 +26,15 @@ public class PlayerColor : NetworkBehaviour
             NetworkedColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
 
-        if (Keyboard.current.iKey.wasPressedThisFrame)
+        if (Keyboard.current.iKey.wasPressedThisFrame && healthPoints >= 0)
         {   
             healthPoints -= hit;
-        }
+            Color colorActual = NetworkedColor;
 
-        Debug.Log(healthPoints);
+            colorActual.r = Mathf.Clamp01(colorActual.r+0.05f);
+            colorActual.g = Mathf.Clamp01(colorActual.g - 0.05f);
 
-        switch (healthPoints)
-        {
-            case <= 10:
-                NetworkedColor = new Color(1f,0f,0f, 1f);
-            break;
+            NetworkedColor = colorActual;
         }
     }
 

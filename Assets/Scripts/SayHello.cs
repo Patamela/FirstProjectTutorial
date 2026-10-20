@@ -3,21 +3,21 @@ using UnityEngine.InputSystem;
 
 public class SayHello : MonoBehaviour
 {
-    public string msg = "¡Hola a todos!";
+    public string mensaje = "¡Hola a todos!";
 
-    private float finalTime = 0f;
+    private float tiempoFin = 0f;
 
     public void ShowMessage(string message)
     {
-        msg = message;
-        finalTime = Time.time + 3f;
+        mensaje = message;
+        tiempoFin = Time.time + 3f;
     }
 
     void OnGUI()
     {
-        if (Time.time < finalTime)
+        if (Time.time < tiempoFin)
         {
-            GUI.Box(new Rect(20, 20, 350, 50),msg);
+            GUI.Box(new Rect(20, 20, 350, 50),mensaje);
         }
     }
 }

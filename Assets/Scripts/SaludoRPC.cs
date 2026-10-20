@@ -12,14 +12,14 @@ public class SaludoRPC : NetworkBehaviour
         {
             string idPlayer = Runner.LocalPlayer.ToString();
 
-            //RPC_Greet($"Hola, soy {idPlayer}");
+            RPC_Greet("Hola, soy "+idPlayer);
         }
     }
 
-
+    [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies)]
     public void RPC_Greet(string message)
     {
-        SayHello ui = FindFirstObjectByType<SayHello>();
+        SayHello ui = FindAnyObjectByType<SayHello>();
 
         if(ui != null)
         {
