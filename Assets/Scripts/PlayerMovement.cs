@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private MeshRenderer playerRenderer;
+    [SerializeField] private GameObject prefabBullet;
+    [SerializeField] private GameObject pointBullet;
 
     private Vector3 _velocity;
     private bool _jumpPressed;
@@ -59,6 +61,12 @@ public class PlayerMovement : NetworkBehaviour
         }*/
 
         _jumpPressed = false;
+
+        if(Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            if(!HasStateAuthority) return;
+            Runner.Spawn(prefabBullet, pointBullet.transform.position + pointBullet.transform.forward, pointBullet.transform.rotation);
+        }
     }
 
     /// <summary>
@@ -72,4 +80,5 @@ public class PlayerMovement : NetworkBehaviour
         camera = Camera.main;
         camera.GetComponent<FirstPersonCamera>().Target = transform;
     }
+
 }
